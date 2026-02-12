@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Lil Peachy ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: black;
+    font-family: "Segoe UI", Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    overflow: hidden;
+}
+
+/* STARRY SKY */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    opacity: 0.8;
+}
+
+/* PASSWORD SCREEN */
+#lockScreen {
+    text-align: center;
+}
+
+input {
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    margin-top: 10px;
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* ENVELOPE */
+.envelope {
+    width: 520px;
+    height: 360px;
+    background: #111;
+    position: relative;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(255, 0, 80, 0.4);
+    display: none;
+}
+
+.flap {
+    width: 0;
+    height: 0;
+    border-left: 260px solid transparent;
+    border-right: 260px solid transparent;
+    border-bottom: 90px solid #222;
+    position: absolute;
+    top: -90px;
+    transition: 1s;
+}
+
+.envelope.open .flap {
+    transform: rotateX(180deg);
+    transform-origin: bottom;
+}
+
+.note {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #181818;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+    padding: 25px;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: 1s;
+    overflow-y: auto;
+}
+
+.envelope.open .note {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.photo {
+    width: 180px;
+    border-radius: 12px;
+    margin: 10px 0;
+}
+
+.counter {
+    margin: 10px 0;
+    font-weight: bold;
+    color: #ff6b9c;
+}
+
+.signature { margin-top: 15px; font-style: italic; }
+</style>
+</head>
+
+<body>
+
+<!-- STARS -->
+<script>
+for (let i = 0; i < 80; i++) {
+    const star = document.createElement("div");
+    star.className = "star";
+    star.style.left = Math.random() * 100 + "vw";
+    star.style.top = Math.random() * 100 + "vh";
+    document.body.appendChild(star);
+}
+</script>
+
+<!-- MUSIC (starts after password unlock) -->
+<audio id="bgMusic" loop>
+    <source src="night_changes.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PASSWORD SCREEN -->
+<div id="lockScreen">
+    <h2>Enter Password ❤️</h2>
+    <input type="password" id="passwordInput">
+    <br>
+    <button onclick="checkPassword()">Open</button>
+</div>
+
+<!-- ENVELOPE -->
+<div class="envelope" id="envelope" onclick="openEnvelope(this)">
+    <div class="flap"></div>
+
+    <div class="note">
+        <h2>Happy Valentine’s Day Boo ❤️</h2>
+        <h3>For my Dear Peachy</h3>
+
+        <img src="photo.jpg" class="photo">
+
+        <div class="counter" id="dayCounter"></div>
+
+        <p id="typedMessage"></p>
+
+        <div class="signature">
+            Forever yours,<br><b>Fluffs</b>
+        </div>
+    </div>
+</div>
+
+<script>
+const music = document.getElementById("bgMusic");
+
+// PASSWORD
+function checkPassword() {
+    const pass = document.getElementById("passwordInput").value.trim();
+
+    if (pass === "230897") {
+        document.getElementById("lockScreen").style.display = "none";
+        document.getElementById("envelope").style.display = "block";
+
+        // start music with soft fade-in
+        music.volume = 0;
+        music.play().catch(() => {});
+
+        let vol = 0;
+        const fade = setInterval(() => {
+            if (vol < 0.4) {
+                vol += 0.02;
+                music.volume = vol;
+            } else {
+                clearInterval(fade);
+            }
+        }, 200);
+
+    } else {
+        alert("Wrong password ❤️");
+    }
+}
+
+// ENVELOPE OPEN
+function openEnvelope(el) {
+    el.classList.add("open");
+    typeMessage();
+}
+
+// DAY COUNTER (June 22, 2021)
+const metDate = new Date(2021, 5, 22);
+const today = new Date();
+const diffTime = today - metDate;
+const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+document.getElementById("dayCounter").innerText =
+    "Together for " + days + " beautiful days ❤️";
+
+// TYPING MESSAGE
+const message = `To my wonderful wife,
+I think The Goo Goo Dolls said it perfectly
+
+'And I'd give up forever to touch you, 'cause I know that you feel me somehow. You're the closest to heaven that I'll ever be.'
+
+Happy Valentine’s Day to the one who is my whole world.
+
+I Love you.`;
+
+let i = 0;
+function typeMessage() {
+    const target = document.getElementById("typedMessage");
+    const interval = setInterval(() => {
+        target.innerHTML += message.charAt(i);
+        i++;
+        if (i >= message.length) clearInterval(interval);
+    }, 40);
+}
+</script>
+
+</body>
+</html>
