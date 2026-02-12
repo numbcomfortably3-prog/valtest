@@ -126,7 +126,7 @@ for (let i = 0; i < 80; i++) {
 </script>
 
 <!-- MUSIC -->
-<audio autoplay loop>
+<audio id="bgMusic" loop>
     <source src="night_changes.mp3" type="audio/mpeg">
 </audio>
 
@@ -162,10 +162,31 @@ for (let i = 0; i < 80; i++) {
 // PASSWORD
 function checkPassword() {
     const pass = document.getElementById("passwordInput").value;
+    const music = document.getElementById("bgMusic");
+
     if (pass === "230897") {
         document.getElementById("lockScreen").style.display = "none";
         document.getElementById("envelope").style.display = "block";
+
+        // start music with soft fade-in
+        music.volume = 0;
+        music.play().catch(() => {});
+
+        let vol = 0;
+        const fade = setInterval(() => {
+            if (vol < 0.4) {
+                vol += 0.02;
+                music.volume = vol;
+            } else {
+                clearInterval(fade);
+            }
+        }, 200);
+
     } else {
+        alert("Wrong password ❤️");
+    }
+}
+else {
         alert("Wrong password ❤️");
     }
 }
